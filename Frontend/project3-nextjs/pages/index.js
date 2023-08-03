@@ -95,8 +95,8 @@ export default function Home() {
 					<div className='form-field'>
 						<label>Date:</label>
 						<select
-							name="location"
-							value={formValues.location}
+							name="date"
+							value={formValues.date}
 							onChange={handleInputChange} 
 							className='dropdown-field'
 						>
