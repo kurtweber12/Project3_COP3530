@@ -11,7 +11,9 @@ import {
 	Legend,
   } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { BarLoader } from "react-spinners";
+import { HttpSubmitForm } from '@/requests/httpRequests';
+
+import Form from '@/components/Form';
 
 ChartJS.register(
 	CategoryScale,
@@ -25,8 +27,7 @@ ChartJS.register(
 
 export default function Home() {
 
-	const locations_dropdown = ["location1", "location2", "location3", "location4"]
-	const dates_dropdown = ["date1", "date2", "date3", "date4"]
+
 	const dummy_chart_data = {
 		labels: ["Search 1", "Search 2"],
 		datasets: [{
@@ -51,10 +52,12 @@ export default function Home() {
 
 	const [formValues, setFormValues] = useState({
 		location: "",
-		date: ""
+		month: "",
+		day: "",
+		year: "",
 	})
 
-	const [loading, setLoading] = useState(true)
+	const [loading, setLoading] = useState(false)
 
 	const handleInputChange = (event) => {
 		const { name, value } = event.target;
@@ -64,53 +67,26 @@ export default function Home() {
 		}));
 	};
 
-	const handleSubmit = (event) => {
-		event.preventDefault();
-		// onSubmit(formValues);
-	};
+	const handleSubmit = async () => {
+		setLoading(true)
+		let response = await HttpSubmitForm(formValues.day, formValues.month, formValues.year, formValues.location)
+		console.log(response)
+		setLoading(false)
+
+	}
 
 	return (
 		<main
 		className="flex min-h-screen flex-col items-center space-y-16 p-24"
 		>
 			<div className='flex flex-row space-x-16'>
-				<form className='form-container' onSubmit={handleSubmit}>
-					<div className='form-field'>
-						<label>Location:</label>
-						<select
-							name="location"
-							value={formValues.location}
-							onChange={handleInputChange} 
-							className='dropdown-field'
-						>
-							{locations_dropdown.map((item, i) => (
-								<option value={item} key={i}>
-									{item}
-								</option>
-							)
-
-							)}
-						</select>
-					</div>
-					<div className='form-field'>
-						<label>Date:</label>
-						<select
-							name="date"
-							value={formValues.date}
-							onChange={handleInputChange} 
-							className='dropdown-field'
-						>
-							{dates_dropdown.map((item, i) => (
-								<option value={item} key={i}>
-									{item}
-								</option>
-							)
-							)}
-						</select>
-					</div>
-					<button className='form-button'>Search</button>
-					<BarLoader loading={loading} color='#fff' className="self-center mt-8" />
-				</form>
+				<Form 
+					onSubmit={handleSubmit}
+					handleInputChange={handleInputChange}
+					formValues={formValues}
+					setFormValues={setFormValues}
+					loading={loading}
+				/>
 				<div className='chart-container'>
 					<Bar data={dummy_chart_data} options={chart_options} />
 				</div>
