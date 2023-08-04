@@ -39,4 +39,12 @@ body {
 	.chart-container {
 		@apply flex flex-row w-[500px]
 	}
+
+	.search-covid-sections {
+		@apply flex flex-row w-[400px] justify-between
+	}
+
+	.data-containers {
+		@apply flex flex-row space-x-32
+	}
 }
