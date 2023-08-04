@@ -111,6 +111,9 @@ export default function Home() {
 					<p>Ternary Search: </p>
 					{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{httpResponse?.ternary_time}</p>)}
 				</div>
+				<div className='flex flex-row w-[400px] justify-between mt-4 text-gray-500 text-sm'>
+					<p>Note: Each iteration for the searches contains a sleep period of 0.0001 seconds in order to exagerate results</p>
+				</div>
 			</div>
 		</main>
 	)

@@ -71,7 +71,7 @@ def sentinelLinearSearch(covidList, day, month, year, country):
 
     i = 0
     while True:
-        time.sleep(0.0001)
+        time.sleep(0.00001)
         if covidList[i][dayIndex] == sentinel[0] and covidList[i][monthIndex] == sentinel[1] and covidList[i][yearIndex] == sentinel[2] and covidList[i][countryIndex] == sentinel[5]:
             if i == len(covidList) - 1: # reaches sentinel value, pop it
                 covidList.pop()
@@ -86,7 +86,7 @@ def ternarySearch(covidList, day, month, year, country):
     left, right = 0, len(covidList) - 1
 
     while left <= right:
-        time.sleep(0.0001)
+        time.sleep(0.00001)
         # divide into thirds
         tern1 = left + (right - left) // 3
         tern2 = right - (right - left) // 3
