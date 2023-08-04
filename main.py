@@ -27,6 +27,7 @@ def merge(left, right):
     leftIndex, rightIndex = 0, 0
 
     while leftIndex < len(left) and rightIndex < len(right):
+        # sort by country
         if left[leftIndex][countryIndex] < right[rightIndex][countryIndex]:
             sortedList.append(left[leftIndex])
             leftIndex += 1
@@ -34,21 +35,24 @@ def merge(left, right):
             sortedList.append(right[rightIndex])
             rightIndex += 1
         else:
-            if left[leftIndex][2] < right[rightIndex][2]:
+            # sort by year
+            if left[leftIndex][yearIndex] < right[rightIndex][yearIndex]:
                 sortedList.append(left[leftIndex])
                 leftIndex += 1
-            elif left[leftIndex][2] > right[rightIndex][2]:
+            elif left[leftIndex][yearIndex] > right[rightIndex][yearIndex]:
                 sortedList.append(right[rightIndex])
                 rightIndex += 1
             else:
-                if left[leftIndex][1] < right[rightIndex][1]:
+                # sort by month
+                if left[leftIndex][monthIndex] < right[rightIndex][monthIndex]:
                     sortedList.append(left[leftIndex])
                     leftIndex += 1
-                elif left[leftIndex][1] > right[rightIndex][1]:
+                elif left[leftIndex][monthIndex] > right[rightIndex][monthIndex]:
                     sortedList.append(right[rightIndex])
                     rightIndex += 1
                 else:
-                    if left[leftIndex][0] < right[rightIndex][0]:
+                    # sort by day
+                    if left[leftIndex][dayIndex] < right[rightIndex][dayIndex]:
                         sortedList.append(left[leftIndex])
                         leftIndex += 1
                     else:
@@ -60,6 +64,7 @@ def merge(left, right):
     return sortedList
 
 def sentinelLinearSearch(covidList, day, month, year, country):
+    # append sentinel value to the end of list
     sentinel = [day, month, year, "", "", country, "", "", "", ""]
     covidList.append(sentinel)
 
@@ -71,7 +76,6 @@ def sentinelLinearSearch(covidList, day, month, year, country):
                 return -1
             else:
                 covidList.pop()
-                print(i)
                 return covidList[i]
         i += 1
 
@@ -80,22 +84,28 @@ def ternarySearch(covidList, day, month, year, country):
     left, right = 0, len(covidList) - 1
 
     while left <= right:
+        # divide into thirds
         tern1 = left + (right - left) // 3
         tern2 = right - (right - left) // 3
 
+        # if found, return
         if covidList[tern1][dayIndex] == day and covidList[tern1][monthIndex] == month and covidList[tern1][yearIndex] == year and covidList[tern1][countryIndex] == country:
             return covidList[tern1]
         if covidList[tern2][dayIndex] == day and covidList[tern2][monthIndex] == month and covidList[tern2][yearIndex] == year and covidList[tern2][countryIndex] == country:
             return covidList[tern2]
         
+        # check which region list is in
+        # if list is within the left and first ternary
         if covidList[tern1][countryIndex] > country or (covidList[tern1][countryIndex] == country and covidList[tern1][yearIndex] > year) or (covidList[tern1][countryIndex] == country and covidList[tern1][yearIndex] == year and covidList[tern1][monthIndex] > month) or (covidList[tern1][countryIndex] == country and covidList[tern1][yearIndex] == year and covidList[tern1][monthIndex] == month and covidList[tern1][dayIndex] > day):
             right = tern1 - 1
+        # if list is within the second ternary and right
         elif covidList[tern2][countryIndex] < country or (covidList[tern2][countryIndex] == country and covidList[tern2][yearIndex] < year) or (covidList[tern2][countryIndex] == country and covidList[tern2][yearIndex] == year and covidList[tern2][monthIndex] < month) or (covidList[tern2][countryIndex] == country and covidList[tern2][yearIndex] == year and covidList[tern2][monthIndex] == month and covidList[tern2][dayIndex] < day):
             left = tern2 + 1
+        # if list is found within both ternaries
         else:
             left = tern1 + 1
             right = tern2 - 1
-    
+    # not found
     return -1
 
 def printList(covidList):
@@ -110,6 +120,7 @@ def main():
         for line in covid_csv:
             covidList.append(line)
 
+    # test cases
     linearCovid = sentinelLinearSearch(covidList, "31", "12", "2019", "Afghanistan")
     print(linearCovid)
 
