@@ -140,23 +140,36 @@ def main(day, month, year, country):
     #     "year": "2019",
     #     "country": "Afghanistan"
     # }
-    # with open('../covid.csv', 'r') as csv_file:
-    #     covid_csv = csv.reader(csv_file)
-    #     next(covid_csv) # skip header line
-    #     covidList = []
-    #     for line in covid_csv:
-    #         covidList.append(line)
 
     covidList = read_csv()
 
     # test cases
     # linearCovid = sentinelLinearSearch(covidList, "31", "12", "2019", "Afghanistan")
     sortedCovid = mergeSort(covidList)   #sorts countries
+
+    start_time_linear = time.time()
     linearCovid = sentinelLinearSearch(sortedCovid, day, month, year, country)
     print(linearCovid)
+    linearCovid = sentinelLinearSearch(sortedCovid, "8", "8", "2020", "Armenia")
+    end_time_linear = time.time()
+    linear_time = end_time_linear - start_time_linear
 
-    ternaryCovid = ternarySearch(sortedCovid, "31", "12", "2019", "Afghanistan")
+    start_time_ternary = time.time()
+    ternaryCovid = ternarySearch(sortedCovid, "8", "8", "2020", "Armenia")
+    #ternaryCovid = ternarySearch(sortedCovid, day, month, year, country)
+    end_time_ternary = time.time()
+    ternary_time = end_time_ternary - start_time_ternary
+
+    if linearCovid == -1:
+        linearCovid = list()
+    
+    if ternaryCovid == -1:
+        linearCovid = list()
+    
+    print(linearCovid)
     print(ternaryCovid)
+
+    return linearCovid, linear_time, ternaryCovid, ternary_time
 
     
 # if __name__ == "__main__":

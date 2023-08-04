@@ -8,6 +8,8 @@ async function HttpSubmitForm(day, month, year, location){
         "location": location
     }
 
+    console.log(data)
+
     try{
         const response = await fetch(`${API_URL}/search-results/`, {
             method: "post",

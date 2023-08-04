@@ -4,12 +4,16 @@ import { HttpDropdown } from '@/requests/httpRequests';
 
 const Form = ({onSubmit, handleInputChange, formValues, setFormValues, loading}) => {
 
-    const locations_dropdown = ["location1", "location2", "location3", "location4"]
-    const dates_dropdown = ["date1", "date2", "date3", "date4"]
     const [dropDownList, setDropDownList] = useState([])
+    const months_dropdown = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+    const years_dropdown = ["2019", "2020"]
+    const days_dropdown = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", 
+        "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"
+    ]
 
     const handleSubmit = (event) => {
 		event.preventDefault();
+        //console.log(formValues)
 		onSubmit(formValues);
 	};
 
@@ -17,6 +21,19 @@ const Form = ({onSubmit, handleInputChange, formValues, setFormValues, loading})
 		const fetch_dropdown = async () => {
 			const dropdown_response = await HttpDropdown()
 			console.log(dropdown_response)
+			console.log(dropdown_response["unique_countries"])
+            
+            const dropdown = dropdown_response["unique_countries"]
+            dropdown.sort(function(a,b) {
+                if(a < b){
+                    return -1;
+                } 
+                if(a > b) {
+                    return 1
+                }
+                return 0
+            })
+
 			setDropDownList(dropdown_response["unique_countries"])
 		}
 
@@ -36,8 +53,9 @@ const Form = ({onSubmit, handleInputChange, formValues, setFormValues, loading})
                     className='dropdown-field'
                     required
                 >
+                    <option value="">Select Option</option>
                     {dropDownList?.map((item, i) => (
-                        <option value={item} key={i} className='text-black'>
+                        <option value={item} key={i}>
                             {item}
                         </option>
                     )
@@ -54,7 +72,8 @@ const Form = ({onSubmit, handleInputChange, formValues, setFormValues, loading})
                     className='dropdown-field'
                     required
                 >
-                    {dates_dropdown.map((item, i) => (
+                    <option value="">Select Option</option>
+                    {months_dropdown.map((item, i) => (
                         <option value={item} key={i}>
                             {item}
                         </option>
@@ -71,7 +90,8 @@ const Form = ({onSubmit, handleInputChange, formValues, setFormValues, loading})
                     className='dropdown-field'
                     required
                 >
-                    {dates_dropdown.map((item, i) => (
+                    <option value="">Select Option</option>
+                    {days_dropdown.map((item, i) => (
                         <option value={item} key={i}>
                             {item}
                         </option>
@@ -88,7 +108,8 @@ const Form = ({onSubmit, handleInputChange, formValues, setFormValues, loading})
                     className='dropdown-field'
                     required
                 >
-                    {dates_dropdown.map((item, i) => (
+                    <option value="">Select Option</option>
+                    {years_dropdown.map((item, i) => (
                         <option value={item} key={i}>
                             {item}
                         </option>
