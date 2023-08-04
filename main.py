@@ -108,6 +108,12 @@ def ternarySearch(covidList, day, month, year, country):
     # not found
     return -1
 
+def uniqueCountries(covidList):
+    countries = set()
+    for x in covidList:
+        countries.add(x[countryIndex])
+    return countries
+
 def printList(covidList):
     for i in covidList:
         print(i)
@@ -121,12 +127,15 @@ def main():
             covidList.append(line)
 
     # test cases
-    linearCovid = sentinelLinearSearch(covidList, "31", "12", "2019", "Afghanistan")
-    print(linearCovid)
+    #linearCovid = sentinelLinearSearch(covidList, "31", "12", "2019", "Afghanistan")
+    #print(linearCovid)
 
     sortedCovid = mergeSort(covidList)   #sorts countries
-    ternaryCovid = ternarySearch(sortedCovid, "31", "12", "2019", "Afghanistan")
-    print(ternaryCovid)
+    countries = uniqueCountries(sortedCovid)
+    print(countries)
+    
+    #ternaryCovid = ternarySearch(sortedCovid, "31", "12", "2019", "Afghanistan")
+    #print(ternaryCovid)
 
     
 if __name__ == "__main__":
