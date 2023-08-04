@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -11,7 +11,7 @@ import {
 	Legend,
   } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { HttpSubmitForm } from '@/requests/httpRequests';
+import { HttpDropdown, HttpSubmitForm } from '@/requests/httpRequests';
 
 import Form from '@/components/Form';
 
@@ -59,6 +59,7 @@ export default function Home() {
 
 	const [loading, setLoading] = useState(false)
 
+
 	const handleInputChange = (event) => {
 		const { name, value } = event.target;
 		setFormValues((prevValues) => ({
@@ -74,6 +75,8 @@ export default function Home() {
 		setLoading(false)
 
 	}
+
+	
 
 	return (
 		<main

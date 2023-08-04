@@ -113,6 +113,23 @@ def printList(covidList):
     for i in covidList:
         print(i)
 
+def uniqueCountries():
+    covidList = read_csv()
+    countries = set()
+    for x in covidList:
+        countries.add(x[countryIndex])
+    return countries
+
+def read_csv():
+    with open('../covid.csv', 'r') as csv_file:
+        covid_csv = csv.reader(csv_file)
+        next(covid_csv) # skip header line
+        covidList = []
+        for line in covid_csv:
+            covidList.append(line)
+
+    return covidList
+
 def main(day, month, year, country):
     # params for search functions
     # covidList, day, month, year, country
@@ -123,12 +140,14 @@ def main(day, month, year, country):
     #     "year": "2019",
     #     "country": "Afghanistan"
     # }
-    with open('../covid.csv', 'r') as csv_file:
-        covid_csv = csv.reader(csv_file)
-        next(covid_csv) # skip header line
-        covidList = []
-        for line in covid_csv:
-            covidList.append(line)
+    # with open('../covid.csv', 'r') as csv_file:
+    #     covid_csv = csv.reader(csv_file)
+    #     next(covid_csv) # skip header line
+    #     covidList = []
+    #     for line in covid_csv:
+    #         covidList.append(line)
+
+    covidList = read_csv()
 
     # test cases
     # linearCovid = sentinelLinearSearch(covidList, "31", "12", "2019", "Afghanistan")

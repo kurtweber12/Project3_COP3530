@@ -1,15 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BarLoader } from "react-spinners";
+import { HttpDropdown } from '@/requests/httpRequests';
 
 const Form = ({onSubmit, handleInputChange, formValues, setFormValues, loading}) => {
 
     const locations_dropdown = ["location1", "location2", "location3", "location4"]
     const dates_dropdown = ["date1", "date2", "date3", "date4"]
+    const [dropDownList, setDropDownList] = useState([])
 
     const handleSubmit = (event) => {
 		event.preventDefault();
 		onSubmit(formValues);
 	};
+
+    useEffect(() => {
+		const fetch_dropdown = async () => {
+			const dropdown_response = await HttpDropdown()
+			console.log(dropdown_response)
+			setDropDownList(dropdown_response["unique_countries"])
+		}
+
+		fetch_dropdown()
+	}, [])
 
 
     return (
@@ -24,8 +36,8 @@ const Form = ({onSubmit, handleInputChange, formValues, setFormValues, loading})
                     className='dropdown-field'
                     required
                 >
-                    {locations_dropdown.map((item, i) => (
-                        <option value={item} key={i}>
+                    {dropDownList?.map((item, i) => (
+                        <option value={item} key={i} className='text-black'>
                             {item}
                         </option>
                     )

@@ -22,4 +22,13 @@ async function HttpSubmitForm(day, month, year, location){
     }
 }
 
-export { HttpSubmitForm }
+async function HttpDropdown() {
+    try {
+        const response = await fetch(`${API_URL}/dropdown/`)
+        return response.json()
+    } catch(error){
+        return error
+    }
+}
+
+export { HttpSubmitForm, HttpDropdown }
