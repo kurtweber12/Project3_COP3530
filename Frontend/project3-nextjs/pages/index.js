@@ -102,12 +102,12 @@ export default function Home() {
 
 			</div>
 			<div className='flex flex-col'>
-				<h2 className='text-2xl mb-2'><span className='border-b'>Search Times</span></h2>
-				<div className='flex flex-row w-[300px] justify-between'>
+				<h2 className='text-2xl mb-2'><span className='border-b'>Search Times (ms)</span></h2>
+				<div className='flex flex-row w-[400px] justify-between'>
 					<p>Sentinel Linear Search: </p>
 					{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{httpResponse?.linear_time}</p>)}
 				</div>
-				<div className='flex flex-row w-[300px] justify-between'>
+				<div className='flex flex-row w-[400px] justify-between'>
 					<p>Ternary Search: </p>
 					{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{httpResponse?.ternary_time}</p>)}
 				</div>
