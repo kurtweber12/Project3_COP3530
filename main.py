@@ -1,6 +1,15 @@
 import csv
 
-def mergeSort(covidList, catIndex):
+dayIndex = 0
+monthIndex = 1
+yearIndex = 2
+casesIndex = 3
+deathsIndex = 4
+countryIndex = 5
+populationIndex = 7
+continentIndex = 8
+
+def mergeSort(covidList):
     if len(covidList) <= 1:
         return covidList
     
@@ -8,91 +17,86 @@ def mergeSort(covidList, catIndex):
     left = covidList[:mid]
     right = covidList[mid:]
 
-    left = mergeSort(left, catIndex)
-    right = mergeSort(right, catIndex)
+    left = mergeSort(left)
+    right = mergeSort(right)
 
-    return merge(left, right, catIndex)
+    return merge(left, right)
 
-def merge(left, right, catIndex):
+def merge(left, right):
     sortedList = []
     leftIndex, rightIndex = 0, 0
 
     while leftIndex < len(left) and rightIndex < len(right):
-        if left[leftIndex][catIndex] < right[rightIndex][catIndex]:
+        if left[leftIndex][countryIndex] < right[rightIndex][countryIndex]:
             sortedList.append(left[leftIndex])
             leftIndex += 1
-        else:
+        elif left[leftIndex][countryIndex] > right[rightIndex][countryIndex]:
             sortedList.append(right[rightIndex])
             rightIndex += 1
+        else:
+            if left[leftIndex][2] < right[rightIndex][2]:
+                sortedList.append(left[leftIndex])
+                leftIndex += 1
+            elif left[leftIndex][2] > right[rightIndex][2]:
+                sortedList.append(right[rightIndex])
+                rightIndex += 1
+            else:
+                if left[leftIndex][1] < right[rightIndex][1]:
+                    sortedList.append(left[leftIndex])
+                    leftIndex += 1
+                elif left[leftIndex][1] > right[rightIndex][1]:
+                    sortedList.append(right[rightIndex])
+                    rightIndex += 1
+                else:
+                    if left[leftIndex][0] < right[rightIndex][0]:
+                        sortedList.append(left[leftIndex])
+                        leftIndex += 1
+                    else:
+                        sortedList.append(right[rightIndex])
+                        rightIndex += 1
 
     sortedList.extend(left[leftIndex:])
     sortedList.extend(right[rightIndex:])
     return sortedList
 
-def sentinelLinearSearch(covidList, catIndex, key):
-    returnList = []
-    #last = covidList[len(covidList) - 1][catIndex]
-    #covidList[len(covidList) - 1][catIndex] = key
-    flag = True
-    try:
-        int(key)
-    except ValueError:
-        flag = False
+def sentinelLinearSearch(covidList, day, month, year, country):
+    sentinel = [day, month, year, "", "", country, "", "", "", ""]
+    covidList.append(sentinel)
 
-    if (flag):
-        key = str(key)
-        for i in range(0, len(covidList)):
-            temp = covidList[i][catIndex]
-            if (key in temp):
-                returnList.append(covidList[i])
-    else:
-        for i in range(0, len(covidList)):
-            temp = covidList[i][catIndex]
-            if (key.casefold() in temp.casefold()):
-                returnList.append(covidList[i])    
-    
-    return returnList
+    i = 0
+    while True:
+        if covidList[i][dayIndex] == sentinel[0] and covidList[i][monthIndex] == sentinel[1] and covidList[i][yearIndex] == sentinel[2] and covidList[i][countryIndex] == sentinel[5]:
+            if i == len(covidList) - 1: # reaches sentinel value, pop it
+                covidList.pop()
+                return -1
+            else:
+                covidList.pop()
+                print(i)
+                return covidList[i]
+        i += 1
 
-def ternarySearch(covidList, catIndex, key):
+
+def ternarySearch(covidList, day, month, year, country):
     left, right = 0, len(covidList) - 1
-    returnList = []
 
     while left <= right:
-        thirdSize = (right - left) // 3
-        tern1 = left + thirdSize
-        tern2 = right - thirdSize
+        tern1 = left + (right - left) // 3
+        tern2 = right - (right - left) // 3
 
-        if key.casefold() in covidList[tern1][catIndex].casefold():
-            returnList.append(covidList[tern1])
-            tempUp = tern1 + 1
-            tempDown = tern1 - 1
-            while (tempUp < len(covidList) and key.casefold() in covidList[tempUp][catIndex].casefold()):
-                returnList.append(covidList[tempUp])
-                tempUp += 1
-            while (tempDown >= 0 and key.casefold() in covidList[tempDown][catIndex].casefold()):
-                returnList.append(covidList[tempDown])
-                tempDown -= 1
-        if key.casefold() in covidList[tern2][catIndex].casefold():
-            returnList.append(covidList[tern2])
-            tempUp = tern2 + 1
-            tempDown = tern2 - 1
-            while (tempUp < len(covidList) and key.casefold() in covidList[tempUp][catIndex].casefold()):
-                returnList.append(covidList[tempUp])
-                tempUp += 1
-            while (tempDown >= 0 and key.casefold() in covidList[tempDown][catIndex].casefold()):
-                returnList.append(covidList[tempDown])
-                tempDown -= 1
+        if covidList[tern1][dayIndex] == day and covidList[tern1][monthIndex] == month and covidList[tern1][yearIndex] == year and covidList[tern1][countryIndex] == country:
+            return covidList[tern1]
+        if covidList[tern2][dayIndex] == day and covidList[tern2][monthIndex] == month and covidList[tern2][yearIndex] == year and covidList[tern2][countryIndex] == country:
+            return covidList[tern2]
         
-        if key.casefold() < covidList[tern1][catIndex].casefold():
+        if covidList[tern1][countryIndex] > country or (covidList[tern1][countryIndex] == country and covidList[tern1][yearIndex] > year) or (covidList[tern1][countryIndex] == country and covidList[tern1][yearIndex] == year and covidList[tern1][monthIndex] > month) or (covidList[tern1][countryIndex] == country and covidList[tern1][yearIndex] == year and covidList[tern1][monthIndex] == month and covidList[tern1][dayIndex] > day):
             right = tern1 - 1
-        elif key.casefold() > covidList[tern2][catIndex].casefold():
+        elif covidList[tern2][countryIndex] < country or (covidList[tern2][countryIndex] == country and covidList[tern2][yearIndex] < year) or (covidList[tern2][countryIndex] == country and covidList[tern2][yearIndex] == year and covidList[tern2][monthIndex] < month) or (covidList[tern2][countryIndex] == country and covidList[tern2][yearIndex] == year and covidList[tern2][monthIndex] == month and covidList[tern2][dayIndex] < day):
             left = tern2 + 1
         else:
             left = tern1 + 1
             right = tern2 - 1
-
-    return returnList
-
+    
+    return -1
 
 def printList(covidList):
     for i in covidList:
@@ -106,15 +110,13 @@ def main():
         for line in covid_csv:
             covidList.append(line)
 
+    linearCovid = sentinelLinearSearch(covidList, "31", "12", "2019", "Afghanistan")
+    print(linearCovid)
 
-    keyType = type(8)
-    linearCovid = sentinelLinearSearch(covidList, 8, "America")
-    sortedCovid = mergeSort(covidList, 8)
-    ternaryCovid = ternarySearch(sortedCovid, 8, "America")
-    
-    printList(ternaryCovid)
-    #printList(linearCovid)
-    #print("hello")
+    sortedCovid = mergeSort(covidList)   #sorts countries
+    ternaryCovid = ternarySearch(sortedCovid, "31", "12", "2019", "Afghanistan")
+    print(ternaryCovid)
+
     
 if __name__ == "__main__":
     main()
