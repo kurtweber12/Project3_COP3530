@@ -71,6 +71,7 @@ def sentinelLinearSearch(covidList, day, month, year, country):
 
     i = 0
     while True:
+        time.sleep(0.0001)
         if covidList[i][dayIndex] == sentinel[0] and covidList[i][monthIndex] == sentinel[1] and covidList[i][yearIndex] == sentinel[2] and covidList[i][countryIndex] == sentinel[5]:
             if i == len(covidList) - 1: # reaches sentinel value, pop it
                 covidList.pop()
@@ -85,6 +86,7 @@ def ternarySearch(covidList, day, month, year, country):
     left, right = 0, len(covidList) - 1
 
     while left <= right:
+        time.sleep(0.0001)
         # divide into thirds
         tern1 = left + (right - left) // 3
         tern2 = right - (right - left) // 3
@@ -138,7 +140,7 @@ def main(day, month, year, country):
     #     "day": "31",
     #     "month": "12",
     #     "year": "2019",
-    #     "country": "Afghanistan"
+    #     "location": "Afghanistan"
     # }
 
     covidList = read_csv()
@@ -147,27 +149,28 @@ def main(day, month, year, country):
     # linearCovid = sentinelLinearSearch(covidList, "31", "12", "2019", "Afghanistan")
     sortedCovid = mergeSort(covidList)   #sorts countries
 
-    start_time_linear = time.time()
+    start_time_linear = time.time() * 1000.0
     linearCovid = sentinelLinearSearch(sortedCovid, day, month, year, country)
-    print(linearCovid)
-    linearCovid = sentinelLinearSearch(sortedCovid, "8", "8", "2020", "Armenia")
-    end_time_linear = time.time()
+    #linearCovid = sentinelLinearSearch(sortedCovid, "31", "12", "2019", "Afghanistan")
+    end_time_linear = time.time() * 1000.0
     linear_time = end_time_linear - start_time_linear
 
-    start_time_ternary = time.time()
-    ternaryCovid = ternarySearch(sortedCovid, "8", "8", "2020", "Armenia")
-    #ternaryCovid = ternarySearch(sortedCovid, day, month, year, country)
-    end_time_ternary = time.time()
+    start_time_ternary = time.time() * 1000.0
+    #ternaryCovid = ternarySearch(sortedCovid, "31", "12", "2019", "Afghanistan")
+    ternaryCovid = ternarySearch(sortedCovid, day, month, year, country)
+    end_time_ternary = time.time() * 1000.0
     ternary_time = end_time_ternary - start_time_ternary
 
     if linearCovid == -1:
         linearCovid = list()
     
     if ternaryCovid == -1:
-        linearCovid = list()
+        ternaryCovid = list()
     
     print(linearCovid)
     print(ternaryCovid)
+    print(linear_time)
+    print(ternary_time)
 
     return linearCovid, linear_time, ternaryCovid, ternary_time
 

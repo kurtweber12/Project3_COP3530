@@ -19,7 +19,7 @@ class SearchResultView(APIView):
         day = str(request.data.get('day'))
         month = str(request.data.get('month'))
         year = str(request.data.get('year'))
-        country = str(request.data.get('country'))
+        country = str(request.data.get('location'))
         linear_covid, lineary_time, ternary_covid, ternary_time = main(day, month, year, country)
         serializer = CountriesSerializer(data={
             "linear_covid": linear_covid,

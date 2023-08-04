@@ -8,4 +8,4 @@ class CountriesSerializer(serializers.Serializer):
     linear_covid = serializers.ListField(child=serializers.CharField())
     linear_time = serializers.CharField()
     ternary_covid = serializers.ListField(child=serializers.CharField())
-    ternary_covid = serializers.CharField()
+    ternary_time = serializers.CharField()

@@ -58,6 +58,7 @@ export default function Home() {
 	})
 
 	const [loading, setLoading] = useState(false)
+	const [httpResponse, setHttpResponse] = useState({})
 
 
 	const handleInputChange = (event) => {
@@ -72,6 +73,11 @@ export default function Home() {
 		setLoading(true)
 		let response = await HttpSubmitForm(formValues.day, formValues.month, formValues.year, formValues.location)
 		console.log(response)
+		if(response.ok){
+			let json_response = await response.json()
+			console.log(json_response)
+			setHttpResponse(json_response)
+		}
 		setLoading(false)
 
 	}
@@ -99,11 +105,11 @@ export default function Home() {
 				<h2 className='text-2xl mb-2'><span className='border-b'>Search Times</span></h2>
 				<div className='flex flex-row w-[300px] justify-between'>
 					<p>Sentinel Linear Search: </p>
-					{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>36 seconds</p>)}
+					{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{httpResponse?.linear_time}</p>)}
 				</div>
 				<div className='flex flex-row w-[300px] justify-between'>
 					<p>Ternary Search: </p>
-					{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>4 seconds</p>)}
+					{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{httpResponse?.ternary_time}</p>)}
 				</div>
 			</div>
 		</main>
