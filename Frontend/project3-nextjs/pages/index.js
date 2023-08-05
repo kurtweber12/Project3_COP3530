@@ -142,6 +142,22 @@ export default function Home() {
 				/>
 			</div>
 			<div className='flex flex-col'>
+				<div className='mt-8 data-containers'>
+					<div>
+						<h2 className='text-2xl mb-2'><span className='border-b'>Covid Data</span></h2>
+						<div className='search-covid-sections'>
+							<p>Cases: </p>
+							{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{covidCases}</p>)}
+						</div>
+						<div className='search-covid-sections'>
+							<p>Deaths: </p>
+							{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{covidDeaths}</p>)}
+						</div>
+					</div>
+					<div className='chart-container'>
+						<Bar data={covid_chart_data} options={covid_chart_options} />
+					</div>
+				</div>
 				<div className='data-containers'>
 					<div>
 						<h2 className='text-2xl mb-2'><span className='border-b'>Search Times (ms)</span></h2>
@@ -161,22 +177,7 @@ export default function Home() {
 						<Bar data={search_chart_data} options={chart_options} />
 					</div>
 				</div>
-				<div className='mt-8 data-containers'>
-					<div>
-						<h2 className='text-2xl mb-2'><span className='border-b'>Covid Data</span></h2>
-						<div className='search-covid-sections'>
-							<p>Cases: </p>
-							{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{covidCases}</p>)}
-						</div>
-						<div className='search-covid-sections'>
-							<p>Deaths: </p>
-							{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{covidDeaths}</p>)}
-						</div>
-					</div>
-					<div className='chart-container'>
-						<Bar data={covid_chart_data} options={covid_chart_options} />
-					</div>
-				</div>
+				
 			</div>
 		</main>
 	)
