@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+# serializers prepare the data in a form where we can send as apart of the response from the view 
 class DropDownSerializer(serializers.Serializer):
     unique_countries = serializers.ListField(child=serializers.CharField())
 
