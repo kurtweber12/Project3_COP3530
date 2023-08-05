@@ -1,6 +1,7 @@
 import csv
 import time
 
+# indexes of csv file for easier manageability
 dayIndex = 0
 monthIndex = 1
 yearIndex = 2
@@ -9,6 +10,16 @@ deathsIndex = 4
 countryIndex = 5
 populationIndex = 7
 continentIndex = 8
+
+def read_csv():
+    with open('../covid.csv', 'r') as csv_file:
+        covid_csv = csv.reader(csv_file)
+        next(covid_csv) # skip header line
+        covidList = []
+        for line in covid_csv:
+            covidList.append(line)
+
+    return covidList
 
 def mergeSort(covidList):
     if len(covidList) <= 1:
@@ -73,10 +84,10 @@ def sentinelLinearSearch(covidList, day, month, year, country):
     while True:
         time.sleep(0.00001)
         if covidList[i][dayIndex] == sentinel[0] and covidList[i][monthIndex] == sentinel[1] and covidList[i][yearIndex] == sentinel[2] and covidList[i][countryIndex] == sentinel[5]:
-            if i == len(covidList) - 1: # reaches sentinel value, pop it
+            if i == len(covidList) - 1: # reaches sentinel value, pop it (values not found in list)
                 covidList.pop()
                 return -1
-            else:
+            else:   # values have been found, return list at found index
                 covidList.pop()
                 return covidList[i]
         i += 1
@@ -122,20 +133,9 @@ def uniqueCountries():
         countries.add(x[countryIndex])
     return countries
 
-def read_csv():
-    with open('../covid.csv', 'r') as csv_file:
-        covid_csv = csv.reader(csv_file)
-        next(covid_csv) # skip header line
-        covidList = []
-        for line in covid_csv:
-            covidList.append(line)
-
-    return covidList
-
 def main(day, month, year, country):
     # params for search functions
     # covidList, day, month, year, country
-
     # {
     #     "day": "31",
     #     "month": "12",
@@ -143,37 +143,27 @@ def main(day, month, year, country):
     #     "location": "Afghanistan"
     # }
 
-    covidList = read_csv()
-
-    # test cases
-    # linearCovid = sentinelLinearSearch(covidList, "31", "12", "2019", "Afghanistan")
+    covidList = read_csv()  # reads in csv file
     sortedCovid = mergeSort(covidList)   #sorts countries
 
+    # sentinel linear search
     start_time_linear = time.time() * 1000.0
     linearCovid = sentinelLinearSearch(sortedCovid, day, month, year, country)
-    #linearCovid = sentinelLinearSearch(sortedCovid, "31", "12", "2019", "Afghanistan")
     end_time_linear = time.time() * 1000.0
     linear_time = end_time_linear - start_time_linear
 
+    # ternary search
     start_time_ternary = time.time() * 1000.0
-    #ternaryCovid = ternarySearch(sortedCovid, "31", "12", "2019", "Afghanistan")
     ternaryCovid = ternarySearch(sortedCovid, day, month, year, country)
     end_time_ternary = time.time() * 1000.0
     ternary_time = end_time_ternary - start_time_ternary
 
+    # api needs list return, converts -1 to an empty list
     if linearCovid == -1:
         linearCovid = list()
     
     if ternaryCovid == -1:
         ternaryCovid = list()
     
-    print(linearCovid)
-    print(ternaryCovid)
-    print(linear_time)
-    print(ternary_time)
-
+    # returns to views.py
     return linearCovid, linear_time, ternaryCovid, ternary_time
-
-    
-# if __name__ == "__main__":
-#     main()
