@@ -30,6 +30,9 @@ export default function Home() {
 	const [timeChartData, setTimeChartData] = useState([0,0])
 	const [covidCases, setCovidCases] = useState(0)
 	const [covidDeaths, setCovidDeaths] = useState(0)
+	const [countryName, setCountryName] = useState("")
+	const [continent, setContinent] = useState("")
+	const [population, setPopulation] = useState(0)
 
 
 	const search_chart_data = {
@@ -113,9 +116,15 @@ export default function Home() {
 			if(json_response.linear_covid.length < 1){
 				setCovidCases(0)
 				setCovidDeaths(0)
+				setContinent("")
+				setCountryName("")
+				setPopulation(0)
 			} else {
 				setCovidCases(json_response.linear_covid[3])
 				setCovidDeaths(json_response.linear_covid[4])
+				setContinent(json_response.linear_covid[8])
+				setCountryName(json_response.linear_covid[5])
+				setPopulation(json_response.linear_covid[7])
 			}
 		}
 		setLoading(false)
@@ -145,6 +154,18 @@ export default function Home() {
 				<div className='mt-8 data-containers'>
 					<div>
 						<h2 className='text-2xl mb-2'><span className='border-b'>Covid Data</span></h2>
+						<div className='search-covid-sections'>
+							<p>Continent: </p>
+							{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{continent}</p>)}
+						</div>
+						<div className='search-covid-sections'>
+							<p>Country: </p>
+							{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{countryName}</p>)}
+						</div>
+						<div className='search-covid-sections'>
+							<p>Population: </p>
+							{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{population}</p>)}
+						</div>
 						<div className='search-covid-sections'>
 							<p>Cases: </p>
 							{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{covidCases}</p>)}
