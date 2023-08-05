@@ -33,6 +33,7 @@ export default function Home() {
 	const [countryName, setCountryName] = useState("")
 	const [continent, setContinent] = useState("")
 	const [population, setPopulation] = useState(0)
+	const [dataFound, setDataFound] = useState(false)
 
 
 	const search_chart_data = {
@@ -119,12 +120,14 @@ export default function Home() {
 				setContinent("")
 				setCountryName("")
 				setPopulation(0)
+				setDataFound(false)
 			} else {
 				setCovidCases(json_response.linear_covid[3])
 				setCovidDeaths(json_response.linear_covid[4])
 				setContinent(json_response.linear_covid[8])
 				setCountryName(json_response.linear_covid[5])
 				setPopulation(json_response.linear_covid[7])
+				setDataFound(true)
 			}
 		}
 		setLoading(false)
@@ -154,26 +157,34 @@ export default function Home() {
 				<div className='mt-8 data-containers'>
 					<div>
 						<h2 className='text-2xl mb-2'><span className='border-b'>Covid Data</span></h2>
-						<div className='search-covid-sections'>
-							<p>Continent: </p>
-							{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{continent}</p>)}
-						</div>
-						<div className='search-covid-sections'>
-							<p>Country: </p>
-							{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{countryName}</p>)}
-						</div>
-						<div className='search-covid-sections'>
-							<p>Population: </p>
-							{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{population}</p>)}
-						</div>
-						<div className='search-covid-sections'>
-							<p>Cases: </p>
-							{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{covidCases}</p>)}
-						</div>
-						<div className='search-covid-sections'>
-							<p>Deaths: </p>
-							{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{covidDeaths}</p>)}
-						</div>
+						{dataFound ? (
+							<>
+							<div className='search-covid-sections'>
+								<p>Continent: </p>
+								{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{continent}</p>)}
+							</div>
+							<div className='search-covid-sections'>
+								<p>Country: </p>
+								{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{countryName}</p>)}
+							</div>
+							<div className='search-covid-sections'>
+								<p>Population: </p>
+								{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{population}</p>)}
+							</div>
+							<div className='search-covid-sections'>
+								<p>Cases: </p>
+								{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{covidCases}</p>)}
+							</div>
+							<div className='search-covid-sections'>
+								<p>Deaths: </p>
+								{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{covidDeaths}</p>)}
+							</div>
+							</>
+						) : (
+							<div className='search-covid-sections'>
+								<p>No Data Found</p>
+							</div>
+						)}
 					</div>
 					<div className='chart-container'>
 						<Bar data={covid_chart_data} options={covid_chart_options} />
