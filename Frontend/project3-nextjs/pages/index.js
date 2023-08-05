@@ -11,7 +11,7 @@ import {
 	Legend,
   } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { HttpDropdown, HttpSubmitForm } from '@/requests/httpRequests';
+import { HttpSubmitForm } from '@/requests/httpRequests';
 
 import Form from '@/components/Form';
 
@@ -27,6 +27,7 @@ ChartJS.register(
 
 export default function Home() {
 
+	// state variables
 	const [timeChartData, setTimeChartData] = useState([0,0])
 	const [covidCases, setCovidCases] = useState(0)
 	const [covidDeaths, setCovidDeaths] = useState(0)
@@ -34,6 +35,16 @@ export default function Home() {
 	const [continent, setContinent] = useState("")
 	const [population, setPopulation] = useState(0)
 	const [dataFound, setDataFound] = useState(false)
+
+	const [formValues, setFormValues] = useState({
+		location: "",
+		month: "",
+		day: "",
+		year: "",
+	})
+
+	const [loading, setLoading] = useState(false)
+	const [httpResponse, setHttpResponse] = useState({})
 
 
 	const search_chart_data = {
@@ -86,17 +97,9 @@ export default function Home() {
 		}
 	}
 	
-	const [formValues, setFormValues] = useState({
-		location: "",
-		month: "",
-		day: "",
-		year: "",
-	})
+	
 
-	const [loading, setLoading] = useState(false)
-	const [httpResponse, setHttpResponse] = useState({})
-
-
+	// handles all of the changes for our formValues state. Passed into Form component as a prop
 	const handleInputChange = (event) => {
 		const { name, value } = event.target;
 		setFormValues((prevValues) => ({
@@ -105,6 +108,7 @@ export default function Home() {
 		}));
 	};
 
+	// function to handle submitting the form data, passed to Form component as a prop
 	const handleSubmit = async () => {
 		setLoading(true)
 		let response = await HttpSubmitForm(formValues.day, formValues.month, formValues.year, formValues.location)
@@ -114,6 +118,8 @@ export default function Home() {
 			console.log(json_response)
 			setHttpResponse(json_response)
 			setTimeChartData([json_response.linear_time, json_response.ternary_time])
+
+			// returns empty list if no items found so we set the variables to empty or 0
 			if(json_response.linear_covid.length < 1){
 				setCovidCases(0)
 				setCovidDeaths(0)
@@ -131,7 +137,6 @@ export default function Home() {
 			}
 		}
 		setLoading(false)
-
 	}
 
 	
@@ -155,10 +160,14 @@ export default function Home() {
 			</div>
 			<div className='flex flex-col'>
 				<div className='mt-8 data-containers'>
+					{/* Covid Data Section */}
 					<div>
 						<h2 className='text-2xl mb-2'><span className='border-b'>Covid Data</span></h2>
+						{/* Conditional rendering for if there is a record for data input into the form */}
 						{dataFound ? (
 							<>
+							{/* More conditional rendering inside each div to show loading when waiting
+							on response from backend server */}
 							<div className='search-covid-sections'>
 								<p>Continent: </p>
 								{loading ? (<p className='text-gray-400'>Loading...</p>) : (<p>{continent}</p>)}
@@ -190,6 +199,8 @@ export default function Home() {
 						<Bar data={covid_chart_data} options={covid_chart_options} />
 					</div>
 				</div>
+
+				{/* Search Times Section */}
 				<div className='data-containers'>
 					<div>
 						<h2 className='text-2xl mb-2'><span className='border-b'>Search Times (ms)</span></h2>

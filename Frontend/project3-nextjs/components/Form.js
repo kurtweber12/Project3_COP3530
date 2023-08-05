@@ -12,11 +12,12 @@ const Form = ({onSubmit, handleInputChange, formValues, setFormValues, loading})
     ]
 
     const handleSubmit = (event) => {
-		event.preventDefault();
+		event.preventDefault(); // prevents page from refreshing when submit is pressed
         //console.log(formValues)
 		onSubmit(formValues);
 	};
 
+    // we want to populate our locations dropdown menu on page load so we fetch the data in the useEffect
     useEffect(() => {
 		const fetch_dropdown = async () => {
 			const dropdown_response = await HttpDropdown()
@@ -24,6 +25,7 @@ const Form = ({onSubmit, handleInputChange, formValues, setFormValues, loading})
 			console.log(dropdown_response["unique_countries"])
             
             const dropdown = dropdown_response["unique_countries"]
+            // sorts the response array alphabetically
             dropdown.sort(function(a,b) {
                 if(a < b){
                     return -1;
